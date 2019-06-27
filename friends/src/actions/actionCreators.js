@@ -32,3 +32,23 @@ export function getFriends() {
       });
     }
 }
+
+export function addFriend(friend) {
+  return (dispatch) => {
+    dispatch({ type: ADDING_FRIEND });
+
+    const token = localStorage.getItem('token');
+    const axiosConfig = token ? { headers: { 'Authorization': token } } : null;
+
+    axios.post('http://localhost:5000/api/friends', friend, axiosConfig )
+      .then(res => {
+        dispatch({ type: ADD_FRIEND_SUCCESS, payload: res.data });
+      })
+      .catch(err => {
+        const error = err.response.data.message;
+        dispatch({ type: ADD_FRIEND_FAILURE, payload: error });
+        console.log(error);
+      })
+  }
+}
+
