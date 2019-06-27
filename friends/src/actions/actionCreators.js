@@ -1,15 +1,34 @@
-export const GETTING_FRIENDS = 'GETTING_FRIENDS';
-export const GETTING_FRIENDS_SUCCESS = 'GETTING_FRIENDS_SUCCESS';
-export const GETTING_FRIENDS_FAILURE = 'GETTING_FRIENDS_FAILURE';
+import axios from 'axios';
+import {
+  GETTING_FRIENDS,
+  GETTING_FRIENDS_SUCCESS,
+  GETTING_FRIENDS_FAILURE,
+  ADDING_FRIEND,
+  ADD_FRIEND_SUCCESS,
+  ADD_FRIEND_FAILURE,
+  DELETING_FRIEND,
+  DELETE_FRIEND_SUCCESS,
+  DELETE_FRIEND_FAILURE,
+  LOGIN_FAILURE,
+  LOGGING_IN,
+  LOGIN_SUCCESS
+} from './actionTypes';
 
-export const ADDING_FRIEND = 'ADDING_FRIEND';
-export const ADD_FRIEND_SUCCESS = 'ADD_FRIEND_SUCCESS';
-export const ADD_FRIEND_FAILURE = 'ADD_FRIEND_FAILURE';
+export function getFriends() {
+  return (dispatch) => {
+    dispatch({ type: GETTING_FRIENDS });
 
-export const DELETING_FRIEND = 'DELETING_FRIEND';
-export const DELETE_FRIEND_SUCCESS = 'DELETE_FRIEND_SUCCESS';
-export const DELETE_FRIEND_FAILURE = 'DELETE_FRIEND_FAILURE';
+    const token = localStorage.getItem('token');
+    const axiosConfig = token ? { headers: {'Authorization': token} }: null;
 
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-export const LOGGING_IN = 'LOGGING_IN';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+    axios.get('http://localhost:5000/api/friends', axiosConfig)
+      .then(res => {
+        dispatch({ type: GETTING_FRIENDS_SUCCESS, payload: res.data });
+      })
+      .catch(err => {
+        const error = err.response.data.message;
+        dispatch({ type: GETTING_FRIENDS_FAILURE, payload: error });
+        console.log(error);
+      });
+    }
+}
