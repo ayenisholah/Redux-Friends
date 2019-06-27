@@ -52,3 +52,21 @@ export function addFriend(friend) {
   }
 }
 
+export function deleteFriend(id) {
+  return (dispatch) => {
+    dispatch({ type: DELETING_FRIEND });
+
+    const = localStorage.getItem('token');
+    const axiosConfig = token ? { headers: { 'Authorization': token } } : null;
+
+    axios.delete(`http://localhost:5000/api/friends/${id}`, axiosConfig)
+      .then(res => {
+        dispatch({ type: DELETE_FRIEND_SUCCESS, payload: res.data })
+      })
+      .catch(err => {
+        const error = err.response.data.message;
+        dispatch({ type: DELETE_FRIEND_FAILURE, payload: error });
+        console.log(error);
+      })
+  }
+}
