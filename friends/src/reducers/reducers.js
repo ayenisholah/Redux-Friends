@@ -53,3 +53,38 @@ export function errorMessageReducer(sliceOfState = '', action) {
       return sliceOfState;
   }
 }
+
+export function requestPendingReducer(sliceOfState = false, action) {
+  switch (action.type) {
+    case GETTING_FRIENDS:
+      return sliceOfState = true;
+    case GETTING_FRIENDS_SUCCESS:
+      return sliceOfState = false;
+    case GETTING_FRIENDS_FAILURE:
+      return sliceOfState = false;
+
+    case ADDING_FRIEND:
+      return sliceOfState = true;
+    case ADD_FRIEND_SUCCESS:
+      return sliceOfState = false;
+    case ADD_FRIEND_FAILURE:
+      return sliceOfState = false;
+
+    case DELETING_FRIEND:
+      return sliceOfState = true;
+    case DELETE_FRIEND_SUCCESS:
+      return sliceOfState = false;
+    case DELETE_FRIEND_FAILURE:
+      return sliceOfState = false;
+
+    case LOGGING_IN:
+      return sliceOfState = true;
+    case LOGIN_SUCCESS:
+      return sliceOfState = false;
+    case LOGIN_FAILURE:
+      return sliceOfState = false;
+
+    default:
+      return sliceOfState;
+  }
+}
