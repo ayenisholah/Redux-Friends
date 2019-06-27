@@ -56,7 +56,7 @@ export function deleteFriend(id) {
   return (dispatch) => {
     dispatch({ type: DELETING_FRIEND });
 
-    const = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const axiosConfig = token ? { headers: { 'Authorization': token } } : null;
 
     axios.delete(`http://localhost:5000/api/friends/${id}`, axiosConfig)
@@ -68,5 +68,22 @@ export function deleteFriend(id) {
         dispatch({ type: DELETE_FRIEND_FAILURE, payload: error });
         console.log(error);
       })
+  }
+}
+
+export function login(credentials) {
+  return (dispatch) => {
+    dispatch({ type: LOGGING_IN });
+
+    return axios.post('http://localhost:5000/api/login', credentials)
+    .then(res => {
+      localStorage.setItem('token', res.data.token);
+      dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+      const error = err.response.data.message;
+      dispatch({ type: LOGIN_FAILURE, payload: error });
+      console.error(error);
+    });
   }
 }
